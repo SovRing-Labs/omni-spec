@@ -1,0 +1,187 @@
+{
+ "_about": {
+  "repo": "omni-spec",
+  "url": "https://github.com/SovRing-Labs/omni-spec",
+  "one_line": "25 standards implemented from the specification text only (Unicode line breaking, graphemes and bidi; JSON; XML; HTML tokenizer; DEFLATE; Brotli; ZIP; PNG; GIF; JPEG; WebP; OpenType; WOFF2; Office Open XML; WebM; parts of Opus) in dependency-free Rust.",
+  "quicktest": "cargo test --offline --test json --test sha256",
+  "quicktest_s": 240,
+  "licence": "Apache-2.0 (code) + CC BY 4.0 (documents)",
+  "status_file": "STATUS.md",
+  "generated": "2026-10-16",
+  "schema": 1,
+  "stage": "pre-alpha, about 30 %",
+  "source": "tests/*.rs; every row re-run on 2026-10-16 on an Intel i5-8365U laptop, logs in results/"
+ },
+ "tests": [
+  {
+   "cpu_flags": [],
+   "id": "O1",
+   "title": "JSON parser: JSONTestSuite 95 accepted, 188 rejected (RFC 8259)",
+   "claim": "json.rs accepts all 95 must-accept files and rejects all 188 must-reject files of JSONTestSuite and round-trips them; the 35 implementation-defined files are reported, not gated.",
+   "kind": "run",
+   "verify": "T=$(mktemp -d) && CARGO_TARGET_DIR=$T cargo test --offline -j 2 --test json 2>&1 | grep -c \"test result: ok\" | grep -qx 1 && echo \"1 binaries ok\"",
+   "expect": "1 binaries ok",
+   "evidence": [
+    "results/2026-10-16-cargo-test-nocapture.log"
+   ],
+   "runtime_s": 240,
+   "needs": [
+    "cargo",
+    "rustc"
+   ],
+   "what_it_means": "The JSON module follows the grammar of RFC 8259 on a public, adversarial corpus: it neither accepts what the standard forbids nor refuses what it allows. It does not show speed or behaviour on numbers beyond binary64.",
+   "how_we_got_it": "cargo test --offline --test json in a copy of the tree (tests/json.rs, files in tests/data/json-suite/), Intel i5-8365U laptop, rustc 1.98.0, 2026-10-16; output in results/2026-10-16-cargo-test-nocapture.log.",
+   "use_in_your_work": "Use the module as a dependency-free JSON reader whose edge cases (surrogate escapes, depth limit 512, duplicate names kept) are written down in docs/json.md.",
+   "honest_limits": "Numbers parse to binary64 only; no big-number mode. The i_ files (implementation-defined) are reported, not asserted."
+  },
+  {
+   "cpu_flags": [],
+   "id": "O2",
+   "title": "SHA-256, XML 1.0 and ZIP: 26 tests pass",
+   "claim": "sha256 (2 tests: NIST examples, one million 'a', incremental splits), xml (11 tests) and zip (13 tests, Info-ZIP fixtures, ZIP64, corruption never panics) all pass.",
+   "kind": "run",
+   "verify": "T=$(mktemp -d) && CARGO_TARGET_DIR=$T cargo test --offline -j 2 --test sha256 --test xml --test zip 2>&1 | grep -c \"test result: ok\" | grep -qx 3 && echo \"3 binaries ok\"",
+   "expect": "3 binaries ok",
+   "evidence": [
+    "results/2026-10-16-cargo-test.log"
+   ],
+   "runtime_s": 300,
+   "needs": [
+    "cargo",
+    "rustc"
+   ],
+   "what_it_means": "Three small standards (FIPS 180-4, W3C XML 1.0 5th ed. plus Namespaces, PKWARE APPNOTE 6.3.10) behave as their published examples and our fixtures say. It does not show the XML parser validates (it is non-validating) or that ZIP encryption works (not implemented).",
+   "how_we_got_it": "cargo test --offline --test sha256 --test xml --test zip; fixtures in tests/data/zip/ were written by Info-ZIP as a black box (tools/make-zip-fixtures.sh); 2026-10-16, i5-8365U laptop.",
+   "use_in_your_work": "Read or write ZIP / OPC containers and hash data without a dependency, with every choice documented in docs/zip.md and docs/xml.md.",
+   "honest_limits": "Reading and writing only stored or deflated entries; no encryption or multi-disk archives; XML DTD entities are not expanded."
+  },
+  {
+   "cpu_flags": [],
+   "id": "O3",
+   "title": "HTML tokenizer: html5lib-tests 6,941/6,941",
+   "claim": "html.rs tokenizes the html5lib tokenizer test suite with 6,941 of 6,941 tests passing (56 CDATA initial states and 52 obsolete processing-instruction tests are excluded by the test and reported).",
+   "kind": "run",
+   "verify": "T=$(mktemp -d) && CARGO_TARGET_DIR=$T cargo test --offline -j 2 --test html_tokenizer 2>&1 | grep -c \"test result: ok\" | grep -qx 1 && echo \"1 binaries ok\"",
+   "expect": "1 binaries ok",
+   "evidence": [
+    "results/2026-10-16-cargo-test-nocapture.log"
+   ],
+   "runtime_s": 240,
+   "needs": [
+    "cargo",
+    "rustc"
+   ],
+   "what_it_means": "The tokenization state machine of the WHATWG HTML standard (section 13.2.5) and the character-reference tables agree with the community conformance suite. It does not show a working HTML parser: tree construction (13.2.6) is not implemented.",
+   "how_we_got_it": "cargo test --offline --test html_tokenizer (tests/html_tokenizer.rs, data in tests/data/html5lib-tokenizer/, MIT licence file there); 2026-10-16, i5-8365U laptop, rustc 1.98.0.",
+   "use_in_your_work": "Feed it markup to get the exact token stream a browser's tokenizer would produce, for linters, sanitizers or scrapers that need spec-exact tokens.",
+   "honest_limits": "No tree construction, no parse-error reporting; 108 tests are excluded by the suite harness itself and listed in its output."
+  },
+  {
+   "cpu_flags": [],
+   "id": "O4",
+   "title": "Brotli, WebP lossless and JPEG decoders against reference output",
+   "claim": "brotli.rs decodes the RFC 7932 streams and 20 independent-encoder streams equal to the originals; webp.rs decodes 10 lossless files exactly as libwebp; jpeg.rs matches libjpeg-turbo within one sample on 8 gated images.",
+   "kind": "run",
+   "verify": "T=$(mktemp -d) && CARGO_TARGET_DIR=$T cargo test --offline -j 2 --test brotli --test webp --test jpeg 2>&1 | grep -c \"test result: ok\" | grep -qx 3 && echo \"3 binaries ok\"",
+   "expect": "3 binaries ok",
+   "evidence": [
+    "results/2026-10-16-cargo-test-nocapture.log"
+   ],
+   "runtime_s": 300,
+   "needs": [
+    "cargo",
+    "rustc"
+   ],
+   "what_it_means": "Three decoders agree with the output of a second implementation on shipped fixtures (RFC 7932, WebP Lossless Bitstream Specification, ITU-T T.81). It does not show they handle every stream: the fixtures are a small synthetic corpus.",
+   "how_we_got_it": "cargo test --offline --test brotli --test webp --test jpeg; fixtures and expected hashes (tests/data/brotli, webp, jpeg and the *-oracle.tsv files) were produced by tools/oracle_*.py running Python brotli and Pillow as separate processes; 2026-10-16, i5-8365U laptop.",
+   "use_in_your_work": "Decode Brotli streams (including WOFF2 payloads), lossless WebP and JPEG without a C library.",
+   "honest_limits": "JPEG 4:2:0 uses nearest-neighbour chroma upsampling and is reported, not gated (max deviation 11 on one file). WebP lossy (VP8) is not implemented. Brotli is decode-only and bit-serial."
+  },
+  {
+   "cpu_flags": [],
+   "id": "O5",
+   "title": "Office Open XML: OPC, XLSX and DOCX read/write (19 tests)",
+   "claim": "opc (6), xlsx (8) and docx (5) tests pass: LibreOffice-written workbooks and documents are read construct by construct, dates 1900-03-01 to 2100 round-trip, our writer's output re-reads exactly.",
+   "kind": "run",
+   "verify": "T=$(mktemp -d) && CARGO_TARGET_DIR=$T cargo test --offline -j 2 --test opc --test xlsx --test docx 2>&1 | grep -c \"test result: ok\" | grep -qx 3 && echo \"3 binaries ok\"",
+   "expect": "3 binaries ok",
+   "evidence": [
+    "results/2026-10-16-cargo-test-nocapture.log"
+   ],
+   "runtime_s": 360,
+   "needs": [
+    "cargo",
+    "rustc"
+   ],
+   "what_it_means": "The packaging layer (ECMA-376 Part 2) and the spreadsheet and word-processing readers and writers (Part 1 sections 18 and 17) agree with files produced by LibreOffice and with our own round trips. It does not show compatibility with Microsoft Office.",
+   "how_we_got_it": "cargo test --offline --test opc --test xlsx --test docx; fixtures in tests/data/ooxml/ written by LibreOffice from sources in tools/make-office-fixtures.sh; the two tests that open our output in LibreOffice report 'skipped' when soffice is absent; 2026-10-16, i5-8365U laptop.",
+   "use_in_your_work": "Extract cells and paragraphs from .xlsx / .docx, or write simple ones, with no dependencies.",
+   "honest_limits": "No formula evaluation or writing; DOCX text boxes, comments, headers, footers and equations are skipped. The LibreOffice-opens-our-output checks run only where soffice is installed."
+  },
+  {
+   "cpu_flags": [],
+   "id": "O6",
+   "title": "WebM / Matroska demuxer chunk-independence and UAX #29 grapheme clusters",
+   "claim": "webm.rs gives the same events for every chunking from 1 to 333 bytes and handles unknown-size clusters (5 tests); uax29.rs passes 853/853 lines of GraphemeBreakTest.txt (Unicode 18.0.0).",
+   "kind": "run",
+   "verify": "T=$(mktemp -d) && CARGO_TARGET_DIR=$T cargo test --offline -j 2 --test webm --test uax29 2>&1 | grep -c \"test result: ok\" | grep -qx 2 && echo \"2 binaries ok\"",
+   "expect": "2 binaries ok",
+   "evidence": [
+    "results/2026-10-16-cargo-test-nocapture.log"
+   ],
+   "runtime_s": 240,
+   "needs": [
+    "cargo",
+    "rustc"
+   ],
+   "what_it_means": "A streaming media container reader and the extended grapheme-cluster rules (GB1 to GB999) behave as RFC 8794 / RFC 9559 and UAX #29 specify on their own test tables. It does not show playback: audio and video codecs are separate.",
+   "how_we_got_it": "cargo test --offline --test webm --test uax29; GraphemeBreakTest.txt (137 KB) is shipped in tests/data/; 2026-10-16, i5-8365U laptop.",
+   "use_in_your_work": "Count user-perceived characters in text, or demux WebM data that arrives in arbitrary pieces (Media Source Extensions style).",
+   "honest_limits": "Legacy grapheme clusters are not offered. No docs/webm.md page exists yet."
+  },
+  {
+   "cpu_flags": [],
+   "id": "O7",
+   "title": "Full cargo test: 113 tests in 24 binaries, including checks that need data this repository does not ship",
+   "claim": "cargo test --offline passed 113 tests in 24 test binaries with 0 failures, including UAX #14 19,346/19,346, UAX #9 770,241 + 91,707, GIF 117/117, SFNT 14,094 rows and Opus framing on the 12 RFC 8251 vectors.",
+   "kind": "external",
+   "verify": "grep -c \"test result: ok\" results/2026-10-16-cargo-test-nocapture.log | grep -qx 25 && grep -q \"UAX14 LineBreakTest: 19346/19346 pass\" results/2026-10-16-cargo-test-nocapture.log && grep -q \"BidiTest.txt: 770241 cases, 0 failures\" results/2026-10-16-cargo-test-nocapture.log && echo \"full run recorded\"",
+   "expect": "full run recorded",
+   "evidence": [
+    "results/2026-10-16-cargo-test-nocapture.log",
+    "results/2026-10-16-cargo-test.log",
+    "DATA.md"
+   ],
+   "runtime_s": 2,
+   "needs": [
+    "grep"
+   ],
+   "what_it_means": "On the author's machine, with the five large Unicode files, the Opus vectors and the host fonts and images present, every test passes. This row re-checks the recorded log only; a reader cannot re-run it from this repository without downloading the files in DATA.md.",
+   "how_we_got_it": "cargo test --offline -j 2 --no-fail-fast, then again with --nocapture --test-threads=1, in a copy of branch claude/work (29f01bc) with target/ removed; about 4 minutes wall time; 2026-10-16, i5-8365U laptop, rustc 1.98.0.",
+   "use_in_your_work": "Download the Unicode 18.0.0 files named in DATA.md into tests/data/ and run cargo test --offline to reproduce the line-breaking and bidirectional conformance counts.",
+   "honest_limits": "Some of the 113 passed with part of their corpus absent (see O8); tests that read host files (fonts, images) depend on the machine."
+  },
+  {
+   "cpu_flags": [],
+   "id": "O8",
+   "title": "Honest negatives: checks that skipped or passed without checking on 2026-10-16",
+   "claim": "On 2026-10-16 the inflate corpus check skipped 49 streams, the PNG oracle skipped 49 images, the WOFF2 glyph-by-glyph test skipped (fontTools not installed), and 14 Opus SILK packets with redundancy differ from the reference final range.",
+   "kind": "file",
+   "verify": "grep -q \"49 skipped (absent)\" results/2026-10-16-cargo-test-nocapture.log && grep -q \"fontTools not importable\" results/2026-10-16-cargo-test-nocapture.log && grep -q \"12 bad (redundancy in 12)\" results/2026-10-16-cargo-test-nocapture.log && echo \"negatives recorded\"",
+   "expect": "negatives recorded",
+   "evidence": [
+    "results/2026-10-16-cargo-test-nocapture.log",
+    "STATUS.md"
+   ],
+   "runtime_s": 1,
+   "needs": [
+    "grep"
+   ],
+   "what_it_means": "Some green tests were green because their reference data was missing. These rows are the places to look before trusting the module tables in README.md for inflate, PNG and WOFF2 glyphs.",
+   "how_we_got_it": "Read from the --nocapture log of the 2026-10-16 run; the test sources (tests/inflate.rs, tests/png.rs, tests/woff2.rs) print a skip count and continue.",
+   "use_in_your_work": "Treat a pass without a count as unproven; install the reference tools (Pillow, fontTools) and re-run to turn these into checked results.",
+   "honest_limits": "Cause not yet fixed: the tests should fail, not skip, when asked to run strictly. Older documents quote 49/49 and 94/94 for these corpora; those numbers were not reproduced today.",
+   "corrections": []
+  }
+ ]
+}

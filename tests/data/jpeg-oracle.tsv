@@ -1,0 +1,12 @@
+# jpeg oracle: Pillow 10.2.0 (libjpeg-turbo); reference RGB8 in tests/data/jpeg/<name>.rgb
+# columns: jpg, width, height, subsampled 4:2:0 (1) or not (0), gate (gate = ±1 check, report = info only)
+base444-33x17.jpg	33	17	0	gate
+base444-64x64.jpg	64	64	0	gate
+prog444-40x23.jpg	40	23	0	gate
+prog444-64x48.jpg	64	48	0	gate
+base-gray-37x19.jpg	37	19	0	gate
+prog-gray-40x40.jpg	40	40	0	gate
+restart444-70x33.jpg	70	33	0	gate
+restart-gray-50x25.jpg	50	25	0	gate
+base420-48x32.jpg	48	32	1	report
+prog420-35x21.jpg	35	21	1	report

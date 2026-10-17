@@ -1,0 +1,8 @@
+# gif — GIF87a / GIF89a decoder
+
+- **Spec:** GIF89a (CompuServe 1989; W3C copy https://www.w3.org/Graphics/GIF/spec-gif89a.txt) — §17 logical screen and colour tables, §18 extensions (graphic control 0xF9, comment, plain text, application), §20 image descriptor and interlace passes, §22 LZW (variable code size, clear/end codes, LSB-first packing), trailer 0x3B.
+- **Code:** `src/gif.rs` — `decode` (all frames parsed), `lzw_decode`, `deinterlace`, `Gif::first_frame_rgba`.
+- **Conformance:** Pillow oracle (`tools/oracle_gif.py` → `tests/data/gif-oracle.tsv`, black-box process; files read in place from /usr/share and /usr/lib): **117 / 117** frame-0 RGBA8 compositions match (FNV-1a 64; alpha-0 RGB zeroed on both sides). Coverage in the set: 108 GIF89a + 7 GIF87a is in the scan; 16 interlaced first frames, 92 with a transparent index, 19 multi-frame (animated), 18 with a local colour table.
+- **Composition rule (choice):** outside frame 0, pixels are transparent when frame 0 has a transparent index (this matches Pillow; the spec leaves that area undefined); otherwise the global background colour. Pixels with the transparent index are alpha 0.
+- **Known gaps:** only frame 0 is composed; disposal methods and later frames are parsed (`Frame.disposal`, `Frame.delay`) but not composited; plain-text and application extensions are skipped; LZW min code size accepted 1..=8; a frame whose data ends before its pixels is `Truncated` (no partial frame).
+- **Patent screen:** GIF LZW (CompuServe GIF87a/89a) — the Unisys LZW patent (US 4,558,302) expired in 2003 (US) / 2004 (elsewhere). No remaining patent encumbrances.

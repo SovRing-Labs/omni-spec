@@ -1,0 +1,21 @@
+# brotli oracle: python brotli 1.1.0; columns: stream file (tests/data/brotli/), original length, FNV-1a 64
+text-q0-w16.br	49152	9c03bca36e1502d1
+text-q1-w16.br	49152	9c03bca36e1502d1
+text-q5-w16.br	49152	9c03bca36e1502d1
+text-q9-w22.br	49152	9c03bca36e1502d1
+text-q11-w22.br	49152	9c03bca36e1502d1
+text-q11-w10.br	49152	9c03bca36e1502d1
+noise-q0-w16.br	4096	dec824d6dbfb1f5f
+noise-q5-w16.br	4096	dec824d6dbfb1f5f
+noise-q11-w16.br	4096	dec824d6dbfb1f5f
+runs-q5-w16.br	16384	d2921ae0062bda65
+runs-q11-w22.br	16384	d2921ae0062bda65
+structured-q5-w16.br	16384	7b1ee645fb5957d5
+structured-q11-w16.br	16384	7b1ee645fb5957d5
+mixed-q5-w22.br	81920	c17da95ec06bab51
+mixed-q11-w22.br	81920	c17da95ec06bab51
+empty-q5-w16.br	0	cbf29ce484222325
+one-q5-w16.br	1	af63f54c86021707
+one-q11-w16.br	1	af63f54c86021707
+repeats-q5-w16.br	600	6ff0de302b2bea65
+repeats-q11-w16.br	600	6ff0de302b2bea65

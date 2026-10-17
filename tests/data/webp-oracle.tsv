@@ -1,0 +1,11 @@
+# webp lossless oracle: Pillow 10.2.0 (libwebp); decoded RGBA8 FNV-1a 64
+lossless-1x1.webp	1	1	728c4dea4eb99e90
+lossless-7x3.webp	7	3	d383ae01be74cdde
+lossless-33x17-m0.webp	33	17	749b96e6ec2d5e16
+lossless-33x17-m6.webp	33	17	e6b156131f4d8dd8
+lossless-64x48-alpha-m4.webp	64	48	23b4bea916240636
+lossless-40x40-alpha-m6.webp	40	40	00f56c95a69bf01a
+lossless-100x30-m2.webp	100	30	183697c3db2efc08
+lossless-17x65-alpha-m1.webp	17	65	b7e960c97b2595c3
+palette16-64x20-m4.webp	64	20	889bc0876f501628
+palette2-37x9-m6.webp	37	9	274d7835f6a0448f

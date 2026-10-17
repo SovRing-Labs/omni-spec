@@ -1,0 +1,329 @@
+# command: cargo test --offline -j 2 --no-fail-fast -- --nocapture --test-threads=1 (same copy and build as 2026-10-16-cargo-test.log; prints each test's own counts) · machine: Intel i5-8365U laptop, x86_64, rustc 1.98.0 · date: 2026-10-16 · exit 0
+    Finished `test` profile [optimized + debuginfo] target(s) in 0.06s
+     Running unittests src/lib.rs (<target-dir>/debug/deps/omni_spec-f56d37b7775ef378)
+
+running 19 tests
+test deflate::tests::deterministic ... ok
+test deflate::tests::empty_and_tiny ... ok
+test deflate::tests::output_limit ... ok
+test deflate::tests::package_merge_respects_the_limit_and_kraft ... ok
+test deflate::tests::repeats_compress_hard ... ok
+test inflate::tests::adler32_known_value ... ok
+test inflate::tests::fixed_block_literal_and_match ... ok
+test inflate::tests::reserved_block_type ... ok
+test inflate::tests::stored_block ... ok
+test inflate::tests::stored_block_bad_nlen ... ok
+test inflate::tests::zlib_header_checks ... ok
+test uax14::tests::class_order_matches_generated_table ... ok
+test uax14::tests::simple_latin_and_space ... ok
+test uax29::tests::family_emoji_is_one_cluster ... ok
+test uax29::tests::flags_pair_up ... ok
+test uax29::tests::gcb_order_matches_generated_table ... ok
+test woff2::tests::base128_and_255uint16 ... ok
+test woff2::tests::rejects_garbage ... ok
+test woff2::tests::triplet_known_cases ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/brotli.rs (<target-dir>/debug/deps/brotli-89dd179f08c56fab)
+
+running 3 tests
+test corrupt_and_random_inputs_never_panic ... ok
+test oracle_streams_match_python_brotli ... brotli oracle: 20 streams checked
+ok
+test rfc7932_trivial_compressor_streams ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.96s
+
+     Running tests/deflate.rs (<target-dir>/debug/deps/deflate-7f87c64d2318d403)
+
+running 4 tests
+test corpus_round_trips_through_our_inflate ... deflate empty: 0 -> 2 (200.0%)
+deflate one: 1 -> 3 (300.0%)
+deflate zeros 1M: 1048576 -> 1032 (0.1%)
+deflate random 300k: 300000 -> 300095 (100.0%)
+deflate skewed 200k: 200000 -> 80608 (40.3%)
+deflate all lengths: 33411 -> 779 (2.3%)
+deflate far repeats: 38000 -> 38015 (100.0%)
+deflate UnicodeData.txt: 2243593 -> 316068 (14.1%)
+deflate BidiTest.txt: 7959988 -> 1291310 (16.2%)
+deflate emoji-data.txt: 108719 -> 23110 (21.3%)
+deflate DerivedCoreProperties.txt: 1159889 -> 217745 (18.8%)
+deflate EastAsianWidth.txt: 204705 -> 49982 (24.4%)
+deflate zip/src/random.bin: 3000 -> 3005 (100.2%)
+deflate zip/src/hello.txt: 11 -> 13 (118.2%)
+deflate zip/src/café-日本.txt: 13 -> 15 (115.4%)
+deflate corpus total: 13299906 -> 2321782
+ok
+test output_limit_is_enforced ... ok
+test python_zlib_decodes_our_streams_byte_equal ... python zlib decoded 15 streams byte-equal
+ok
+test zip_add_deflated_round_trip_and_unzip_t ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.64s
+
+     Running tests/docx.rs (<target-dir>/debug/deps/docx-711f2068f1c9403b)
+
+running 5 tests
+test errors_and_empty ... ok
+test image_headers ... ok
+test libreoffice_document ... ok
+test libreoffice_opens_our_output ... ok
+test round_trip_model ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.83s
+
+     Running tests/gif.rs (<target-dir>/debug/deps/gif-0c6657e59a22fbda)
+
+running 2 tests
+test corpus_frame0_matches_pillow ... gif oracle: 117 files checked, 0 skipped (absent)
+ok
+test invalid_lzw_code_is_an_error ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.81s
+
+     Running tests/html_tokenizer.rs (<target-dir>/debug/deps/html_tokenizer-782b334599442794)
+
+running 1 test
+test html5lib_tokenizer_suite ... html5lib tokenizer: 6941/6941 pass (56 initial states skipped: CDATA; 52 obsolete processing-instruction tests excluded)
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/inflate.rs (<target-dir>/debug/deps/inflate-c39fd833a93188d2)
+
+running 3 tests
+test corpus_png_idat_matches_zlib_oracle ... inflate corpus: 0 streams match, 49 skipped (absent)
+ok
+test corrupt_and_random_inputs_never_panic ... ok
+test rfc_stored_and_fixed_examples ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/jpeg.rs (<target-dir>/debug/deps/jpeg-c3a7f41b28d22291)
+
+running 1 test
+test pillow_reference_within_one_sample ... report base420-48x32.jpg: max sample deviation 11, mean 2.29
+report prog420-35x21.jpg: max sample deviation 15, mean 3.51
+jpeg oracle: 8 gated images within ±1
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/json.rs (<target-dir>/debug/deps/json-4e8970400fff4f4d)
+
+running 3 tests
+test depth_limit_is_an_error ... ok
+test json_test_suite_test_parsing ... JSONTestSuite test_parsing: y_ accepted 95, n_ rejected 188; i_ accepted 11 / rejected 24 (implementation-defined)
+ok
+test rfc_spot_checks ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/opc.rs (<target-dir>/debug/deps/opc-ca7cdce69363428a)
+
+running 6 tests
+test libreoffice_docx_package ... ok
+test libreoffice_xlsx_package ... ok
+test not_a_package ... ok
+test part_name_rules ... ok
+test strict_relationship_types_match ... ok
+test writer_round_trip ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/opus.rs (<target-dir>/debug/deps/opus-5140f71a125b31a5)
+
+running 5 tests
+test celt_laplace_intervals_contiguous ... ok
+test framing_matches_reference_duration ... vector 01: 2147 packets, SILK/Hybrid/CELT [0, 0, 2147], 1415040 samples, reference 1415040
+vector 02: 1185 packets, SILK/Hybrid/CELT [1185, 0, 0], 1201440 samples, reference 1201440
+vector 03: 998 packets, SILK/Hybrid/CELT [998, 0, 0], 1015680 samples, reference 1015680
+vector 04: 1265 packets, SILK/Hybrid/CELT [1265, 0, 0], 1278240 samples, reference 1278240
+vector 05: 2037 packets, SILK/Hybrid/CELT [0, 2037, 0], 1304160 samples, reference 1304160
+vector 06: 1876 packets, SILK/Hybrid/CELT [0, 1876, 0], 1200960 samples, reference 1200960
+vector 07: 4186 packets, SILK/Hybrid/CELT [0, 0, 4186], 1085040 samples, reference 1085040
+vector 08: 1247 packets, SILK/Hybrid/CELT [5, 0, 1242], 1310160 samples, reference 1310160
+vector 09: 1337 packets, SILK/Hybrid/CELT [5, 0, 1332], 1323600 samples, reference 1323600
+vector 10: 1912 packets, SILK/Hybrid/CELT [0, 314, 1598], 1536480 samples, reference 1536480
+vector 11: 553 packets, SILK/Hybrid/CELT [0, 0, 553], 1440960 samples, reference 1440960
+vector 12: 1332 packets, SILK/Hybrid/CELT [1068, 264, 0], 1278720 samples, reference 1278720
+ok
+test range_decoder_tell_invariants ... ok
+test silk_final_range_and_pcm ... vector 02: SILK final range 1185 ok / 0 bad (redundancy in 0); first bad None; SNR 18.5 dB at lag 1
+vector 03: SILK final range 998 ok / 0 bad (redundancy in 0); first bad None; SNR 19.5 dB at lag 0
+vector 04: SILK final range 1265 ok / 0 bad (redundancy in 0); first bad None; SNR 18.9 dB at lag 0
+vector 12: SILK final range 1056 ok / 12 bad (redundancy in 12); first bad Some((136, 1434174720, 1412970240, true)); SNR 19.4 dB at lag 0
+vector 08: SILK final range 4 ok / 1 bad (redundancy in 1); first bad Some((4, 125186182, 104530054, true)); SNR 20.6 dB at lag 2
+vector 09: SILK final range 4 ok / 1 bad (redundancy in 1); first bad Some((4, 645858365, 661542757, true)); SNR 27.5 dB at lag 2
+ok
+test silk_vocoder_formants_survive ... target 730 Hz: nearest peak 4 Hz away (peaks [734.0, 1084.0, 2440.0, 3500.0, 4500.0, 5498.0, 6496.0, 7496.0])
+target 1090 Hz: nearest peak 6 Hz away (peaks [734.0, 1084.0, 2440.0, 3500.0, 4500.0, 5498.0, 6496.0, 7496.0])
+target 2440 Hz: nearest peak 0 Hz away (peaks [734.0, 1084.0, 2440.0, 3500.0, 4500.0, 5498.0, 6496.0, 7496.0])
+target 270 Hz: nearest peak 2 Hz away (peaks [268.0, 2294.0, 3014.0, 3488.0, 4492.0, 5494.0, 6492.0, 7496.0])
+target 2290 Hz: nearest peak 4 Hz away (peaks [268.0, 2294.0, 3014.0, 3488.0, 4492.0, 5494.0, 6492.0, 7496.0])
+target 3010 Hz: nearest peak 4 Hz away (peaks [268.0, 2294.0, 3014.0, 3488.0, 4492.0, 5494.0, 6492.0, 7496.0])
+target 300 Hz: nearest peak 2 Hz away (peaks [298.0, 866.0, 2238.0, 3502.0, 4502.0, 5500.0, 6498.0, 7498.0])
+target 870 Hz: nearest peak 4 Hz away (peaks [298.0, 866.0, 2238.0, 3502.0, 4502.0, 5500.0, 6498.0, 7498.0])
+target 2240 Hz: nearest peak 2 Hz away (peaks [298.0, 866.0, 2238.0, 3502.0, 4502.0, 5500.0, 6498.0, 7498.0])
+ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.69s
+
+     Running tests/otshape.rs (<target-dir>/debug/deps/otshape-7752a09d63f0cccb)
+
+running 5 tests
+test harfbuzz_oracle_fixture ... otshape oracle: 275 kern pairs, 20 ligature strings checked, 0 skipped (font absent)
+ok
+test malformed_input_is_an_error_not_a_panic ... ok
+test synthetic_class_pair_kerning_from_gpos ... ok
+test synthetic_legacy_kern_table_fallback ... ok
+test synthetic_ligature_from_gsub ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/png.rs (<target-dir>/debug/deps/png-5c6cb9b3d2ee07e3)
+
+running 6 tests
+test bad_crc_and_bad_signature_are_errors ... ok
+test gray_1_2_4_16_bit_scaling_and_trns ... ok
+test invalid_colour_depth_combination_is_rejected ... ok
+test palette_2_bit_with_alpha ... ok
+test palette_index_out_of_range_is_an_error ... ok
+test pillow_oracle_rgba_matches ... png oracle: 45 images match Pillow RGBA8, 49 skipped (absent)
+ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests/sfnt.rs (<target-dir>/debug/deps/sfnt-5aab19c99248505e)
+
+running 1 test
+test matches_fonttools_and_harfbuzz_oracle ... sfnt oracle: 14094 rows checked, 0 skipped (font absent)
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/sha256.rs (<target-dir>/debug/deps/sha256-634ffa5b21d489cc)
+
+running 2 tests
+test fips_examples ... ok
+test incremental_matches_one_shot ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/uax14.rs (<target-dir>/debug/deps/uax14-9997541f7a6acdd8)
+
+running 1 test
+test line_break_test_conformance ... UAX14 LineBreakTest: 19346/19346 pass
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/uax29.rs (<target-dir>/debug/deps/uax29-4c5ec376907435f4)
+
+running 1 test
+test grapheme_break_test_conformance ... UAX29 GraphemeBreakTest: 853/853 pass
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/uax9.rs (<target-dir>/debug/deps/uax9-19bd0383c015b44d)
+
+running 2 tests
+test bidi_character_test_txt ... BidiCharacterTest.txt: 91707 cases, 0 failures
+ok
+test bidi_test_txt ... BidiTest.txt: 770241 cases, 0 failures
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.20s
+
+     Running tests/webm.rs (<target-dir>/debug/deps/webm-34a04362419a764f)
+
+running 5 tests
+test any_chunking_same_events ... ok
+test demux_whole_stream ... ok
+test garbage_is_an_error_not_a_panic ... ok
+test lacing_rfc9559_examples ... ok
+test vint_rfc8794_table2 ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/webp.rs (<target-dir>/debug/deps/webp-969a05a1afbf4f2c)
+
+running 2 tests
+test lossy_vp8_is_reported_unsupported ... ok
+test vp8l_matches_libwebp_exactly ... webp lossless oracle: 10 files checked
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/woff2.rs (<target-dir>/debug/deps/woff2-b06b2a24e97b1cbd)
+
+running 4 tests
+test corrupted_and_truncated_inputs_never_panic ... woff2 fuzz: 400 bit-flip variants (117 decoded, 283 refused), truncations refused
+ok
+test every_table_equals_fonttools ... woff2: 40 fonts, 520 tables byte-equal to fontTools (0 fonts absent from /usr/lib/claude-desktop/resources/ion-dist/assets/v1)
+ok
+test glyf_matches_fonttools_glyph_by_glyph ... fontTools not importable (set OMNI_ORACLE_SITE): skipped
+ok
+test sfnt_output_reparses_with_the_same_tables ... woff2 -> sfnt: 12 fonts re-parsed
+ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.21s
+
+     Running tests/xlsx.rs (<target-dir>/debug/deps/xlsx-f9393dd350f7f993)
+
+running 8 tests
+test date_systems ... ok
+test libreoffice_csv_workbook ... ok
+test libreoffice_opens_our_output ... ok
+test libreoffice_rich_workbook ... ok
+test number_format_classes ... ok
+test references ... ok
+test write_then_read ... ok
+test xstring_escapes ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.66s
+
+     Running tests/xml.rs (<target-dir>/debug/deps/xml-0f268f69c7880d97)
+
+running 11 tests
+test attribute_normalisation ... ok
+test cdata_and_line_ends ... ok
+test declaration_comment_pi_doctype ... ok
+test decode_boms ... ok
+test empty_elements_emit_end ... ok
+test entities_and_char_refs ... ok
+test malformed_documents_are_errors ... ok
+test namespaces ... ok
+test random_inputs_never_panic ... ok
+test read_text_and_skip ... ok
+test writer_round_trip ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+
+     Running tests/zip.rs (<target-dir>/debug/deps/zip-e136d7a38e69b0aa)
+
+running 13 tests
+test archive_comment ... ok
+test corrupted_and_random_inputs_never_panic ... ok
+test cp437_table_is_complete ... ok
+test crc32_check_value ... ok
+test deflate_archive ... ok
+test directories ... ok
+test empty_archive ... ok
+test errors ... ok
+test stored_archive ... ok
+test streamed_with_data_descriptor ... ok
+test utf8_names ... ok
+test writer_round_trip ... ok
+test zip64_records ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+   Doc-tests omni_spec
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

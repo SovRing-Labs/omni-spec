@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+"""Generate src/uax14_tables.rs from the Unicode Character Database files in tests/data/.
+
+Sources (UCD 18.0.0, https://www.unicode.org/Public/UCD/latest/ucd/):
+  LineBreak.txt        Line_Break property            (UAX #14 §5.1, §6.2 rule LB1)
+  EastAsianWidth.txt   East_Asian_Width property      (UAX #14 §6.2, $EastAsian in LB19a/LB30)
+  emoji/emoji-data.txt Extended_Pictographic          (UAX #14 LB30b)
+  UnicodeData.txt      General_Category (Mn, Mc, Pi, Pf, Cn) (UAX #14 LB1 SA rule, LB15a/b, LB30b)
+
+Output: one sorted run table, RUNS: &[(u32 start, u16 packed)]; a code point takes the packed value of the
+last run whose start <= cp. Packed layout: bits 0-5 line-break class index, bit 8 East_Asian_Width in {F,W,H},
+bit 9 Extended_Pictographic, bits 10-12 general category code (see GC_* below).
+
+Usage: python3 tools/gen_uax14.py   (run from the omni-spec crate root)
+"""
+import os
+import re
+import sys
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+DATA = os.path.join(ROOT, "tests", "data")
+OUT = os.path.join(ROOT, "src", "uax14_tables.rs")
+MAX_CP = 0x110000
+
+# Line_Break classes, in the order of the Rust enum (matches the values in UAX #14 Table 1).
+CLASSES = ["AI", "AK", "AL", "AP", "AS", "B2", "BA", "BB", "BK", "CB", "CJ", "CL", "CM", "CP", "CR",
+           "EB", "EM", "EX", "GL", "H2", "H3", "HH", "HL", "HY", "ID", "IN", "IS", "JL", "JT", "JV", "LF",
+           "NL", "NS", "NU", "OP", "PO", "PR", "QU", "RI", "SA", "SG", "SP", "SY", "VF", "VI", "WJ",
+           "XX", "ZW", "ZWJ"]
+CLASS_IDX = {c: i for i, c in enumerate(CLASSES)}
+
+GC_OTHER, GC_MN, GC_MC, GC_PI, GC_PF, GC_CN = 0, 1, 2, 3, 4, 5
+
+
+def parse_ranges(path):
+    """Yield (lo, hi, value) from a UCD file of 'XXXX[..YYYY] ; value # comment' lines, including @missing."""
+    missing = []
+    entries = []
+    with open(path, encoding="utf-8") as f:
+        for raw in f:
+            line = raw.split("#", 1)[0].strip() if not raw.startswith("# @missing") else raw
+            if raw.startswith("# @missing:"):
+                m = re.match(r"# @missing:\s*([0-9A-F]+)\.\.([0-9A-F]+);\s*(\S+)", raw)
+                missing.append((int(m.group(1), 16), int(m.group(2), 16), m.group(3)))
+                continue
+            if not line or ";" not in line:
+                continue
+            rng, val = [p.strip() for p in line.split(";", 1)]
+            val = val.split()[0]
+            if ".." in rng:
+                lo, hi = rng.split("..")
+                entries.append((int(lo, 16), int(hi, 16), val))
+            else:
+                entries.append((int(rng, 16), int(rng, 16), val))
+    return missing, entries
+
+
+def fill(arr, missing, entries, default):
+    for lo, hi, val in missing:
+        for cp in range(lo, hi + 1):
+            arr[cp] = val
+    for lo, hi, val in entries:
+        for cp in range(lo, hi + 1):
+            arr[cp] = val
+    return arr
+
+
+def main():
+    # Line_Break: defaults to XX per @missing.
+    lb_missing, lb_entries = parse_ranges(os.path.join(DATA, "LineBreak.txt"))
+    lb = fill([ "XX" ] * MAX_CP, lb_missing, lb_entries, "XX")
+    lb_idx = [CLASS_IDX[v] for v in lb]
+
+    # East_Asian_Width: only F, W, H matter for $EastAsian; default N.
+    ea_missing, ea_entries = parse_ranges(os.path.join(DATA, "EastAsianWidth.txt"))
+    fhw = bytearray(MAX_CP)
+    for lo, hi, val in ea_entries:
+        if val in ("F", "W", "H"):
+            for cp in range(lo, hi + 1):
+                fhw[cp] = 1
+
+    # Extended_Pictographic from emoji-data.txt.
+    ext = bytearray(MAX_CP)
+    _, ep_entries = parse_ranges(os.path.join(DATA, "emoji-data.txt"))
+    for lo, hi, val in ep_entries:
+        if val == "Extended_Pictographic":
+            for cp in range(lo, hi + 1):
+                ext[cp] = 1
+
+    # General_Category: only Mn, Mc, Pi, Pf matter; Cn = not listed in UnicodeData.txt.
+    gc = bytearray([GC_CN]) * MAX_CP
+    gc_of = {"Mn": GC_MN, "Mc": GC_MC, "Pi": GC_PI, "Pf": GC_PF}
+    first = None
+    with open(os.path.join(DATA, "UnicodeData.txt"), encoding="utf-8") as f:
+        for line in f:
+            fields = line.rstrip("\n").split(";")
+            if len(fields) < 3:
+                continue
+            cp = int(fields[0], 16)
+            name, cat = fields[1], fields[2]
+            code = gc_of.get(cat, GC_OTHER)
+            if name.endswith(", First>"):
+                first = cp
+                continue
+            if name.endswith(", Last>") and first is not None:
+                for c in range(first, cp + 1):
+                    gc[c] = code
+                first = None
+                continue
+            gc[cp] = code
+
+    # Pack and run-length encode.
+    runs = []
+    prev = None
+    for cp in range(MAX_CP):
+        packed = lb_idx[cp] | (fhw[cp] << 8) | (ext[cp] << 9) | (gc[cp] << 10)
+        if packed != prev:
+            runs.append((cp, packed))
+            prev = packed
+
+    with open(OUT, "w", encoding="utf-8") as out:
+        out.write("// @generated by tools/gen_uax14.py from tests/data/{LineBreak,EastAsianWidth,UnicodeData}.txt\n")
+        out.write("// and tests/data/emoji-data.txt (Unicode 18.0.0). Do not hand-edit.\n")
+        out.write("// Packed: bits 0-5 class index, bit 8 EAW in {F,W,H}, bit 9 Extended_Pictographic, bits 10-12 general category.\n\n")
+        out.write("/// Line_Break class names in index order (UAX #14 Table 1).\n")
+        out.write("#[allow(dead_code)]\npub(crate) const CLASS_NAMES: &[&str] = &[\n")
+        for c in CLASSES:
+            out.write(f'    "{c}",\n')
+        out.write("];\n\n")
+        out.write(f"/// {len(runs)} runs; sorted by start code point.\n")
+        out.write("pub(crate) static RUNS: &[(u32, u16)] = &[\n")
+        for start, packed in runs:
+            out.write(f"    (0x{start:05X}, 0x{packed:04X}),\n")
+        out.write("];\n")
+    print(f"wrote {OUT}: {len(runs)} runs", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

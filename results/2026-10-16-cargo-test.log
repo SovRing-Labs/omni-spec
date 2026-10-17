@@ -1,0 +1,298 @@
+# command: cargo test --offline -j 2 --no-fail-fast (copy of claude/work 29f01bc with target/ removed; CARGO_TARGET_DIR=<target-dir>; profile.test opt-level 3) · machine: Intel i5-8365U laptop, x86_64, rustc 1.98.0 · date: 2026-10-16 · wall time ~4 min (04:58:26 -> 05:02:14 PDT) · exit 0
+# per-binary summary:
+#unittests src/lib.rs 	test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+#tests/brotli.rs 	test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+#tests/deflate.rs 	test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.26s
+#tests/docx.rs 	test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.18s
+#tests/gif.rs 	test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.39s
+#tests/html_tokenizer.rs 	test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+#tests/inflate.rs 	test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+#tests/jpeg.rs 	test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+#tests/json.rs 	test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+#tests/opc.rs 	test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+#tests/opus.rs 	test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.60s
+#tests/otshape.rs 	test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+#tests/png.rs 	test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+#tests/sfnt.rs 	test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+#tests/sha256.rs 	test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+#tests/uax14.rs 	test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+#tests/uax29.rs 	test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+#tests/uax9.rs 	test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.90s
+#tests/webm.rs 	test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+#tests/webp.rs 	test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+#tests/woff2.rs 	test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+#tests/xlsx.rs 	test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.51s
+#tests/xml.rs 	test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+#tests/zip.rs 	test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+#      Doc-tests omni_spec	test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+# full output follows
+Fri Oct 16 04:58:26 PM PDT 2026
+x86_64
+rustc 1.98.0 (88d9e12ae 2026-08-18)
+   Compiling omni-spec v0.1.0 (<copy-of-repo>)
+    Finished `test` profile [optimized + debuginfo] target(s) in 3m 29s
+     Running unittests src/lib.rs (<target-dir>/debug/deps/omni_spec-f56d37b7775ef378)
+
+running 19 tests
+test deflate::tests::package_merge_respects_the_limit_and_kraft ... ok
+test inflate::tests::adler32_known_value ... ok
+test inflate::tests::reserved_block_type ... ok
+test inflate::tests::stored_block ... ok
+test inflate::tests::stored_block_bad_nlen ... ok
+test inflate::tests::fixed_block_literal_and_match ... ok
+test deflate::tests::empty_and_tiny ... ok
+test uax29::tests::family_emoji_is_one_cluster ... ok
+test uax29::tests::flags_pair_up ... ok
+test uax29::tests::gcb_order_matches_generated_table ... ok
+test woff2::tests::base128_and_255uint16 ... ok
+test woff2::tests::rejects_garbage ... ok
+test woff2::tests::triplet_known_cases ... ok
+test uax14::tests::simple_latin_and_space ... ok
+test deflate::tests::repeats_compress_hard ... ok
+test inflate::tests::zlib_header_checks ... ok
+test uax14::tests::class_order_matches_generated_table ... ok
+test deflate::tests::output_limit ... ok
+test deflate::tests::deterministic ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/brotli.rs (<target-dir>/debug/deps/brotli-89dd179f08c56fab)
+
+running 3 tests
+test rfc7932_trivial_compressor_streams ... ok
+test oracle_streams_match_python_brotli ... ok
+test corrupt_and_random_inputs_never_panic ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+     Running tests/deflate.rs (<target-dir>/debug/deps/deflate-7f87c64d2318d403)
+
+running 4 tests
+test output_limit_is_enforced ... ok
+test zip_add_deflated_round_trip_and_unzip_t ... ok
+test python_zlib_decodes_our_streams_byte_equal ... ok
+test corpus_round_trips_through_our_inflate ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.26s
+
+     Running tests/docx.rs (<target-dir>/debug/deps/docx-711f2068f1c9403b)
+
+running 5 tests
+test image_headers ... ok
+test libreoffice_document ... ok
+test errors_and_empty ... ok
+test round_trip_model ... ok
+test libreoffice_opens_our_output ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.18s
+
+     Running tests/gif.rs (<target-dir>/debug/deps/gif-0c6657e59a22fbda)
+
+running 2 tests
+test invalid_lzw_code_is_an_error ... ok
+test corpus_frame0_matches_pillow ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.39s
+
+     Running tests/html_tokenizer.rs (<target-dir>/debug/deps/html_tokenizer-782b334599442794)
+
+running 1 test
+test html5lib_tokenizer_suite ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/inflate.rs (<target-dir>/debug/deps/inflate-c39fd833a93188d2)
+
+running 3 tests
+test rfc_stored_and_fixed_examples ... ok
+test corpus_png_idat_matches_zlib_oracle ... ok
+test corrupt_and_random_inputs_never_panic ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/jpeg.rs (<target-dir>/debug/deps/jpeg-c3a7f41b28d22291)
+
+running 1 test
+test pillow_reference_within_one_sample ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/json.rs (<target-dir>/debug/deps/json-4e8970400fff4f4d)
+
+running 3 tests
+test depth_limit_is_an_error ... ok
+test rfc_spot_checks ... ok
+test json_test_suite_test_parsing ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+
+     Running tests/opc.rs (<target-dir>/debug/deps/opc-ca7cdce69363428a)
+
+running 6 tests
+test not_a_package ... ok
+test part_name_rules ... ok
+test strict_relationship_types_match ... ok
+test libreoffice_docx_package ... ok
+test libreoffice_xlsx_package ... ok
+test writer_round_trip ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/opus.rs (<target-dir>/debug/deps/opus-5140f71a125b31a5)
+
+running 5 tests
+test celt_laplace_intervals_contiguous ... ok
+test range_decoder_tell_invariants ... ok
+test silk_vocoder_formants_survive ... ok
+test framing_matches_reference_duration ... ok
+test silk_final_range_and_pcm ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.60s
+
+     Running tests/otshape.rs (<target-dir>/debug/deps/otshape-7752a09d63f0cccb)
+
+running 5 tests
+test malformed_input_is_an_error_not_a_panic ... ok
+test synthetic_class_pair_kerning_from_gpos ... ok
+test synthetic_legacy_kern_table_fallback ... ok
+test synthetic_ligature_from_gsub ... ok
+test harfbuzz_oracle_fixture ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/png.rs (<target-dir>/debug/deps/png-5c6cb9b3d2ee07e3)
+
+running 6 tests
+test bad_crc_and_bad_signature_are_errors ... ok
+test gray_1_2_4_16_bit_scaling_and_trns ... ok
+test invalid_colour_depth_combination_is_rejected ... ok
+test palette_2_bit_with_alpha ... ok
+test palette_index_out_of_range_is_an_error ... ok
+test pillow_oracle_rgba_matches ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/sfnt.rs (<target-dir>/debug/deps/sfnt-5aab19c99248505e)
+
+running 1 test
+test matches_fonttools_and_harfbuzz_oracle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/sha256.rs (<target-dir>/debug/deps/sha256-634ffa5b21d489cc)
+
+running 2 tests
+test incremental_matches_one_shot ... ok
+test fips_examples ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/uax14.rs (<target-dir>/debug/deps/uax14-9997541f7a6acdd8)
+
+running 1 test
+test line_break_test_conformance ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/uax29.rs (<target-dir>/debug/deps/uax29-4c5ec376907435f4)
+
+running 1 test
+test grapheme_break_test_conformance ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/uax9.rs (<target-dir>/debug/deps/uax9-19bd0383c015b44d)
+
+running 2 tests
+test bidi_character_test_txt ... ok
+test bidi_test_txt ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.90s
+
+     Running tests/webm.rs (<target-dir>/debug/deps/webm-34a04362419a764f)
+
+running 5 tests
+test demux_whole_stream ... ok
+test any_chunking_same_events ... ok
+test garbage_is_an_error_not_a_panic ... ok
+test vint_rfc8794_table2 ... ok
+test lacing_rfc9559_examples ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/webp.rs (<target-dir>/debug/deps/webp-969a05a1afbf4f2c)
+
+running 2 tests
+test lossy_vp8_is_reported_unsupported ... ok
+test vp8l_matches_libwebp_exactly ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/woff2.rs (<target-dir>/debug/deps/woff2-b06b2a24e97b1cbd)
+
+running 4 tests
+test sfnt_output_reparses_with_the_same_tables ... ok
+test glyf_matches_fonttools_glyph_by_glyph ... ok
+test every_table_equals_fonttools ... ok
+test corrupted_and_truncated_inputs_never_panic ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/xlsx.rs (<target-dir>/debug/deps/xlsx-f9393dd350f7f993)
+
+running 8 tests
+test number_format_classes ... ok
+test references ... ok
+test libreoffice_csv_workbook ... ok
+test xstring_escapes ... ok
+test libreoffice_rich_workbook ... ok
+test write_then_read ... ok
+test date_systems ... ok
+test libreoffice_opens_our_output ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.51s
+
+     Running tests/xml.rs (<target-dir>/debug/deps/xml-0f268f69c7880d97)
+
+running 11 tests
+test attribute_normalisation ... ok
+test cdata_and_line_ends ... ok
+test declaration_comment_pi_doctype ... ok
+test decode_boms ... ok
+test empty_elements_emit_end ... ok
+test entities_and_char_refs ... ok
+test malformed_documents_are_errors ... ok
+test namespaces ... ok
+test read_text_and_skip ... ok
+test writer_round_trip ... ok
+test random_inputs_never_panic ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/zip.rs (<target-dir>/debug/deps/zip-e136d7a38e69b0aa)
+
+running 13 tests
+test cp437_table_is_complete ... ok
+test crc32_check_value ... ok
+test archive_comment ... ok
+test empty_archive ... ok
+test errors ... ok
+test utf8_names ... ok
+test streamed_with_data_descriptor ... ok
+test stored_archive ... ok
+test directories ... ok
+test deflate_archive ... ok
+test zip64_records ... ok
+test writer_round_trip ... ok
+test corrupted_and_random_inputs_never_panic ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+   Doc-tests omni_spec
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+EXIT=0
+Fri Oct 16 05:02:14 PM PDT 2026

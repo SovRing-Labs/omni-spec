@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "omni-spec: published standards implemented from the specification text only"
+version: 0.1.0
+date-released: 2026-10-16
+abstract: "A dependency-free Rust library of 25 modules written from published specifications (Unicode UAX #9, #14, #29; JSON; XML; HTML tokenizer; DEFLATE; Brotli; ZIP; PNG; GIF; JPEG; WebP; OpenType; WOFF2; Office Open XML; WebM; parts of Opus), each checked against the standard's conformance data or a black-box second implementation. Pre-alpha. Published as defensive prior art."
+authors:
+  - family-names: "De Santiago"
+    given-names: "Juan Carlos"
+repository-code: "https://github.com/SovRing-Labs/omni-spec"
+license:
+  - Apache-2.0
+  - CC-BY-4.0
+keywords: [standards, clean-room, conformance, Unicode, Brotli, DEFLATE, OpenType, WebM, Opus, Rust]

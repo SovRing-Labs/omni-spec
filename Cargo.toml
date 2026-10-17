@@ -1,0 +1,11 @@
+[package]
+name = "omni-spec"
+version = "0.1.0"
+edition = "2024"
+description = "Our own implementations of published standards (Unicode, OpenType, IETF, W3C), built from the specifications only."
+
+[dependencies]
+# none, by design: every module is written from its published standard (clean-room)
+
+[profile.test]
+opt-level = 3
